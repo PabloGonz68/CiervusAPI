@@ -20,7 +20,7 @@ Representa a los usuarios de la plataforma, quienes pueden ser propietarios y/o 
 | **username**       | String   | NULLABLE                |
 | **email**        | String   | UNIQUE, NULLABLE        |
 | **password**   | String   | NULLABLE                |
-| **rol**          | String   | NULLABLE                |
+| **roles**          | String   | NULLABLE                |
 | **fecha_registro** | Date    | NULLABLE                |
 
 ---
