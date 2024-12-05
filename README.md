@@ -17,9 +17,9 @@ Representa a los usuarios de la plataforma, quienes pueden ser propietarios y/o 
 | Campo            | Tipo     | Restricciones           |
 |-------------------|----------|-------------------------|
 | **id**           | Long     | PRIMARY KEY             |
-| **nombre**       | String   | NULLABLE                |
+| **username**       | String   | NULLABLE                |
 | **email**        | String   | UNIQUE, NULLABLE        |
-| **contraseña**   | String   | NULLABLE                |
+| **password**   | String   | NULLABLE                |
 | **rol**          | String   | NULLABLE                |
 | **fecha_registro** | Date    | NULLABLE                |
 
