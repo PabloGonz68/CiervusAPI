@@ -54,55 +54,39 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ### **1. Usuarios**
 
-| **POST /usuarios**|
-|-------------------|
-  Crear un nuevo usuario en la plataforma.
-
-- **GET /usuarios/{id}**  
-  Obtener la información de un usuario específico por su `id`.
-
-- **PUT /usuarios/{id}**  
-  Actualizar la información de un usuario por su `id`.
-
-- **DELETE /usuarios/{id}**  
-  Eliminar un usuario de la plataforma por su `id`.
+| **Endpoint**                | **Descripción**                                              |
+|-----------------------------|--------------------------------------------------------------|
+| **POST /usuarios**           | Crear un nuevo usuario en la plataforma.                     |
+| **GET /usuarios/{id}**       | Obtener la información de un usuario específico por su `id`. |
+| **PUT /usuarios/{id}**       | Actualizar la información de un usuario por su `id`.         |
+| **DELETE /usuarios/{id}**    | Eliminar un usuario de la plataforma por su `id`.            |
 
 ---
 
 ### **2. Productos**
 
-- **POST /productos**  
-  Crear un nuevo producto disponible para alquiler.
-
-- **GET /productos**  
-  Obtener la lista de todos los productos disponibles.
-
-- **GET /productos/{id}**  
-  Obtener detalles de un producto específico por su `id`.
-
-- **PUT /productos/{id}**  
-  Actualizar información de un producto por su `id`.
-
-- **DELETE /productos/{id}**  
-  Eliminar un producto de la plataforma por su `id`.
+| **Endpoint**                | **Descripción**                                              |
+|-----------------------------|--------------------------------------------------------------|
+| **POST /productos**          | Crear un nuevo producto disponible para alquiler.            |
+| **GET /productos**           | Obtener la lista de todos los productos disponibles.         |
+| **GET /productos/{id}**      | Obtener detalles de un producto específico por su `id`.      |
+| **PUT /productos/{id}**      | Actualizar información de un producto por su `id`.           |
+| **DELETE /productos/{id}**   | Eliminar un producto de la plataforma por su `id`.           |
 
 ---
 
 ### **3. Reservas**
 
-- **POST /reservas**  
-  Crear una nueva reserva para un producto.
-
-- **GET /reservas/usuario/{usuarioId}**  
-  Consultar las reservas activas de un usuario específico por su `usuarioId`.
-
-- **PUT /reservas/{id}**  
-  Modificar las fechas de una reserva existente.
-
-- **DELETE /reservas/{id}**  
-  Cancelar una reserva existente.
+| **Endpoint**                | **Descripción**                                              |
+|-----------------------------|--------------------------------------------------------------|
+| **POST /reservas**           | Crear una nueva reserva para un producto.                    |
+| **GET /reservas/usuario/{usuarioId}** | Consultar las reservas activas de un usuario específico por su `usuarioId`. |
+| **PUT /reservas/{id}**       | Modificar las fechas de una reserva existente.              |
+| **DELETE /reservas/{id}**    | Cancelar una reserva existente.                             |
 
 ---
+
+
 
 
 
