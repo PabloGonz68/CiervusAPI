@@ -86,6 +86,10 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ---
 
+## Logica de negocio
+
+
+## Excepciones
 
 
 
