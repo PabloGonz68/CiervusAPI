@@ -53,8 +53,9 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 ## Endpoints
 
 ### **1. Usuarios**
-
-- **POST /usuarios**  
+|-------------------|
+| **POST /usuarios**|
+|-------------------|
   Crear un nuevo usuario en la plataforma.
 
 - **GET /usuarios/{id}**  
