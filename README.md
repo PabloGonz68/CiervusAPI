@@ -1,4 +1,4 @@
-# Proyecto Creación de una API SEGURA - API de Gestion de Alquiler de Productos
+# Creación de una API SEGURA - API de Gestion de Alquiler de Productos
 
 ## Nombre del proyecto
 **Ciervus**
