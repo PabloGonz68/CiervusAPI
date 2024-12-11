@@ -15,4 +15,5 @@ public class ProductoDTO {
     private String descripcion;
     private double precio;
     private Date fecha_publicacion;
+    private Long propietario_id;
 }

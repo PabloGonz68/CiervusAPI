@@ -1,0 +1,14 @@
+package com.es.api_ciervus.error;
+
+import lombok.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class ErrorMessageForClient {
+    private String mensaje;
+    private String uri;
+
+}

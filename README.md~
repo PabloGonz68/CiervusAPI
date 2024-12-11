@@ -136,11 +136,12 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 - **404 Not Found**: Cuando un recurso no se encuentra (por ejemplo, usuario, producto, o reserva).
 - **405 Method Not Allowed**: Cuando se utiliza un método HTTP incorrecto.
 - **409 Conflict**: Cuando se intenta crear un recurso con datos duplicados.
+- **422 Unprocessable Entity**: Cuando los datos enviados no cumplen con las reglas de validación.
 - **500 Internal Server Error**: Cuando ocurre un error inesperado en el servidor.
 ### Codigos de Estado Restantes
 - **200 OK**: Cuando la solicitud se ha procesado correctamente y la respuesta contiene los datos solicitados.
-- **201 Created**: Cuando se crea un nuevo recurso exitosamente.
-- **204 No Content**: Cuando se elimina un recurso correctamente, pero no se devuelve ningún contenido.
+- **201 Created**: Cuando se crea un nuevo recurso exitosamente (por ejemplo, un usuario o producto se ha creado correctamente).
+- **204 No Content**: Cuando se elimina un recurso correctamente, pero no se devuelve ningún contenido (por ejemplo, una eliminación de producto exitosa).
 
 
 
