@@ -87,18 +87,46 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ---
 
-## Logica de negocio
+## **Lógica de Negocio**
 
-### 1. Gestión de Usuarios
-- Registro y autenticación: Los usuarios se registran, inician sesión y actualizan su información personal. Las contraseñas se almacenan de manera segura.
-- Roles: Los usuarios tienen roles (usuario y admin). Los administradores gestionan el sistema.
+### **1. Gestión de Usuarios**
+- **Registro y autenticación**:  
+  Los usuarios se registran proporcionando su nombre, email y contraseña. La contraseña se almacena cifrada. Los usuarios inician sesión con su email y contraseña para obtener un token de autenticación.
 
-### 2. Gestión de Productos
-- Publicación y edición: Los usuarios pueden publicar y editar productos disponibles para alquilar, incluyendo nombre, descripción y precio.
-- Visualización: Los usuarios pueden buscar y ver productos disponibles.
+- **Roles**:  
+  Los usuarios tienen roles definidos como "usuario" o "admin".
+    - **Usuarios**: Publican productos, realizan reservas y gestionan sus datos personales.
+    - **Administradores**: Supervisan y gestionan usuarios, productos y reservas en toda la plataforma.
 
-### 3. Gestión de Reservas
-- Creación y cancelación: Los usuarios pueden reservar productos en fechas específicas, que deben ser verificadas por disponibilidad. Las reservas pueden cancelarse bajo ciertas condiciones.
+- **Verificación de usuarios**:  
+  Se implementa un sistema de validación para asegurar que los datos de los usuarios sean únicos y válidos.
+
+---
+
+### **2. Gestión de Productos**
+- **Publicación y edición**:  
+  Los usuarios pueden publicar productos para alquilar proporcionando nombre, descripción, precio, y fechas de disponibilidad. Solo un administrador o el propietario puede editar o eliminar su producto.
+
+- **Visualización**:  
+  Los usuarios pueden explorar los productos disponibles utilizando filtros como categoría, precio, y fechas de disponibilidad.
+
+- **Restricción de duplicados**:  
+  No se permite que un usuario publique dos productos idénticos (mismo nombre y descripción) dentro de un intervalo corto de tiempo.
+
+---
+### **3. Gestión de Reservas**
+- **Creación de reservas**:  
+  Los usuarios pueden reservar un producto especificando una fecha de inicio y fin. La lógica valida que:
+    - El producto no esté reservado en el rango de fechas solicitado. Si ya existe una reserva para esas fechas, la solicitud será rechazada con un error `409 Conflict`.
+    - El usuario no sea el propietario del producto reservado(prohibido auto-reservar).
+
+- **Cancelación de reservas**:  
+  Las reservas pueden cancelarse siempre que la fecha de inicio no haya pasado. Si ya está activa, la cancelación no será permitida.
+
+- **Disponibilidad**:  
+  La lógica verifica las fechas de disponibilidad del producto para asegurar que la reserva solicitada esté dentro de las fechas permitidas por el propietario.
+
+---
 
 ## Excepciones y Códigos de Estado
 ### Excepciones
