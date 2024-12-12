@@ -1,10 +1,15 @@
 package com.es.api_ciervus.service;
 
 import com.es.api_ciervus.dto.UserRegisterDTO;
+import com.es.api_ciervus.dto.UsuarioDTO;
 import com.es.api_ciervus.error.exception.BadRequestException;
 import com.es.api_ciervus.error.exception.ConflictException;
+import com.es.api_ciervus.error.exception.ResourceNotFoundException;
 import com.es.api_ciervus.model.Usuario;
 import com.es.api_ciervus.repository.UsuarioRepository;
+import com.es.api_ciervus.utils.Mapper;
+import com.es.api_ciervus.utils.StringToLong;
+import com.es.api_ciervus.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +32,8 @@ public class UsuarioService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private Mapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -63,5 +71,43 @@ public class UsuarioService implements UserDetailsService {
         newUser.setRoles(user.getRoles());
         usuarioRepository.save(newUser);
         return user;
+    }
+    public UsuarioDTO getById(String id){
+        Long idLong = StringToLong.stringToLong(id);
+        if (idLong == null || idLong <= 0) {
+            throw new BadRequestException("El id no es valido");
+        }
+        Usuario usuario = usuarioRepository.findById(idLong).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
+        return mapper.mapToUsuarioDTO(usuario);
+    }
+
+    public List<UsuarioDTO> getAll(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        if (usuarios.isEmpty()) {
+            throw new BadRequestException("No hay usuarios registrados");
+        }
+        List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
+        usuarios.forEach(usuario -> usuarioDTOS.add(mapper.mapToUsuarioDTO(usuario)));
+        return usuarioDTOS;
+    }
+
+    public UsuarioDTO update(String id, UsuarioDTO user){
+        Long idLong = StringToLong.stringToLong(id);
+        if (idLong == null || idLong <= 0) {
+            throw new BadRequestException("El id no es valido");
+        }
+        Validator.validateUser(user);
+        Usuario newUser = mapper.mapToUsuario(user);
+        newUser.setId(idLong);
+        usuarioRepository.save(newUser);
+        return mapper.mapToUsuarioDTO(newUser);
+    }
+
+    public void delete(String id) {
+        Long idLong = StringToLong.stringToLong(id);
+        if (idLong == null || idLong <= 0) {
+            throw new BadRequestException("El id no es valido");
+        }
+        usuarioRepository.deleteById(idLong);
     }
 }

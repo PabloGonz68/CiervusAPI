@@ -2,6 +2,7 @@ package com.es.api_ciervus.utils;
 
 import com.es.api_ciervus.dto.ProductoDTO;
 import com.es.api_ciervus.dto.ReservaDTO;
+import com.es.api_ciervus.dto.UsuarioDTO;
 import com.es.api_ciervus.model.Producto;
 import com.es.api_ciervus.model.Reserva;
 import com.es.api_ciervus.model.Usuario;
@@ -9,6 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Mapper {
+
+    public UsuarioDTO mapToUsuarioDTO(Usuario usuario) {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setUsername(usuario.getUsername());
+        return usuarioDTO;
+    }
+
+    public Usuario mapToUsuario(UsuarioDTO usuarioDTO) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setUsername(usuarioDTO.getUsername());
+        return usuario;
+    }
 
     public ProductoDTO mapToProductoDTO(Producto producto) {
        ProductoDTO productoDTO = new ProductoDTO();

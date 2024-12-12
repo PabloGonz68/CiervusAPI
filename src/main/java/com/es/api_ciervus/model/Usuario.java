@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -25,6 +26,10 @@ public class Usuario {
     private String roles;
     @Column(nullable = false)
     private Date fecha_registro;
+    @OneToMany(mappedBy = "propietario_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Producto> productos;
+    @OneToMany(mappedBy = "usuario_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas;
 
 
 
