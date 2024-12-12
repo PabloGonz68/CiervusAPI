@@ -7,7 +7,7 @@ import com.es.api_ciervus.error.exception.ValidationException;
 import java.util.Date;
 
 public class Validator {
-    public static  void validateProducto(ProductoDTO productoDTO) throws Exception {
+    public static  void validateProducto(ProductoDTO productoDTO) {
          if (productoDTO.getNombre().isEmpty() || productoDTO.getNombre() == null) {
              throw new ValidationException("El nombre del producto no puede estar vacio");
          }
@@ -29,7 +29,7 @@ public class Validator {
 
     }
 
-    public static  void validateReserva(ReservaDTO reservaDTO) throws Exception {
+    public static  void validateReserva(ReservaDTO reservaDTO) {
         if (reservaDTO.getFecha_inicio() == null) {
             throw new ValidationException("La fecha de inicio de la reserva no puede estar vacia");
         }
