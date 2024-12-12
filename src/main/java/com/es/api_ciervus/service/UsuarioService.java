@@ -1,6 +1,8 @@
 package com.es.api_ciervus.service;
 
 import com.es.api_ciervus.dto.UserRegisterDTO;
+import com.es.api_ciervus.error.exception.BadRequestException;
+import com.es.api_ciervus.error.exception.ConflictException;
 import com.es.api_ciervus.model.Usuario;
 import com.es.api_ciervus.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,19 @@ public class UsuarioService implements UserDetailsService {
 
     public UserRegisterDTO register(UserRegisterDTO user){
         if (usuarioRepository.findByUsername(user.getUsername()).isPresent()) {
-
+            throw new ConflictException("El usuario ya existe");
         }
-
+        if (!user.getPassword1().equals(user.getPassword2())) {
+            throw new BadRequestException("Las contraseñas no coinciden");
+        }
+        if (!user.getRoles().equals("ADMIN") && !user.getRoles().equals("USER")) {
+            throw new BadRequestException("El rol debe ser ADMIN o USER");
+        }
+        Usuario newUser = new Usuario();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword1()));
+        newUser.setRoles(user.getRoles());
+        usuarioRepository.save(newUser);
+        return user;
     }
 }
