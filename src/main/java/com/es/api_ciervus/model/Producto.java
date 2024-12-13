@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -24,6 +25,8 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "propietario_id", nullable = false)
     private Usuario propietario_id;
+    @OneToMany(mappedBy = "producto_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas;
 
     public Producto(String nombre, String descripcion, double precio, Date fecha_publicacion, Usuario propietario_id) {
         this.nombre = nombre;

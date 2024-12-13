@@ -47,9 +47,6 @@ public class Mapper {
 
     public ReservaDTO mapToReservaDTO(Reserva reserva) {
         ReservaDTO reservaDTO = new ReservaDTO();
-        reservaDTO.setNombre(reserva.getNombre());
-        reservaDTO.setEstado(reserva.getEstado());
-        reservaDTO.setPrecio(reserva.getPrecio());
         reservaDTO.setProducto_id(reserva.getProducto_id().getId());
         reservaDTO.setUsuario_id(reserva.getUsuario_id().getId());
         return reservaDTO;
@@ -57,9 +54,6 @@ public class Mapper {
 
     public Reserva mapToReserva(ReservaDTO reservaDTO, Usuario usuario, Producto producto) {
         Reserva reserva = new Reserva();
-        reserva.setNombre(reservaDTO.getNombre());
-        reserva.setEstado(reservaDTO.getEstado());
-        reserva.setPrecio(reservaDTO.getPrecio());
         reserva.setProducto_id(producto);
         reserva.setUsuario_id(usuario);
         return reserva;

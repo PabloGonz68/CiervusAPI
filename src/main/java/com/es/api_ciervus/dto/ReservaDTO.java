@@ -10,10 +10,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class ReservaDTO {
-
-    private Date fecha_inicio;
-    private Date fecha_fin;
+    private String nombre;
+    private String estado;
+    private double precio;
     private Long producto_id;
     private Long usuario_id;
-
 }

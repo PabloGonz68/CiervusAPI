@@ -54,36 +54,40 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ### **1. Usuarios**
 
-| **Endpoint**                | **Descripción**                                              |
-|-----------------------------|--------------------------------------------------------------|
-| **POST /usuarios**           | Crear un nuevo usuario en la plataforma. [Admin] & [Usuario(solo el suyo)]                    |
-| **GET /usuarios**       | Obtener la información de todos los usuarios. [Admin]   |
-| **GET /usuarios/{id}**       | Obtener la información de un usuario específico por su `id`. [Admin] & [Usuario(solo el suyo)]   |
-| **PUT /usuarios/{id}**       | Actualizar la información de un usuario por su `id`. [Admin] & [Usuario(solo el suyo)]          |
-| **DELETE /usuarios/{id}**    | Eliminar un usuario de la plataforma por su `id`. [Admin] & [Usuario(solo el suyo)]             |
+| **Endpoint**              | **Descripción**                                              |
+|---------------------------|--------------------------------------------------------------|
+| **POST /usuarios/**       | Crear un nuevo usuario en la plataforma (Registro). [Admin] & [Usuario(solo el suyo)] |
+| **POST /login**           | Iniciar sesión en la plataforma. [Público]                  |
+| **GET /usuarios/**        | Obtener la información de todos los usuarios. [Admin]       |
+| **GET /usuarios/{id}**    | Obtener la información de un usuario específico por su `id`. [Admin] & [Usuario(solo el suyo)] |
+| **PUT /usuarios/{id}**    | Actualizar la información de un usuario por su `id`. [Admin] & [Usuario(solo el suyo)] |
+| **DELETE /usuarios/{id}** | Eliminar un usuario de la plataforma por su `id`. [Admin] & [Usuario(solo el suyo)] |
+
+
+
 
 ---
 
 ### **2. Productos**
 
-| **Endpoint**                | **Descripción**                                              |
-|-----------------------------|--------------------------------------------------------------|
-| **POST /productos**          | Crear un nuevo producto disponible para alquiler. [Admin] & [Usuario(solo los suyos)]              |
-| **GET /productos**           | Obtener la lista de todos los productos disponibles. [Admin] & [Usuario]          |
-| **GET /productos/{id}**      | Obtener detalles de un producto específico por su `id`. [Admin] & [Usuario]       |
-| **PUT /productos/{id}**      | Actualizar información de un producto por su `id`. [Admin] & [Usuario(solo los suyos)]           |
-| **DELETE /productos/{id}**   | Eliminar un producto de la plataforma por su `id`. [Admin] & [Usuario(solo los suyos)]           |
+| **Endpoint**               | **Descripción**                                              |
+|----------------------------|--------------------------------------------------------------|
+| **POST /productos/**       | Crear un nuevo producto disponible para alquiler. [Admin] & [Usuario(solo los suyos)]              |
+| **GET /productos/**        | Obtener la lista de todos los productos disponibles. [Público]          |
+| **GET /productos/{id}**    | Obtener detalles de un producto específico por su `id`. [Público]       |
+| **PUT /productos/{id}**    | Actualizar información de un producto por su `id`. [Admin] & [Usuario(solo los suyos)]           |
+| **DELETE /productos/{id}** | Eliminar un producto de la plataforma por su `id`. [Admin] & [Usuario(solo los suyos)]           |
 
 ---
 
 ### **3. Reservas**
 
-| **Endpoint**                | **Descripción**                                              |
-|-----------------------------|--------------------------------------------------------------|
-| **POST /reservas**           | Crear una nueva reserva para un producto. [Admin] & [Usuario(solo las suyas)]                    |
+| **Endpoint**                  | **Descripción**                                              |
+|-------------------------------|--------------------------------------------------------------|
+| **POST /reservas/**           | Crear una nueva reserva para un producto. [Admin] & [Usuario(solo las suyas)]                    |
 | **GET /reservas/{usuarioId}** | Consultar las reservas activas de un usuario específico por su `usuarioId`. [Admin] & [Usuario(solo las suyas)]   |
-| **PUT /reservas/{id}**       | Modificar las fechas de una reserva existente. [Admin] & [Usuario(solo las suyas)]                |
-| **DELETE /reservas/{id}**    | Cancelar una reserva existente. [Admin] & [Usuario(solo las suyas)]                               |
+| **PUT /reservas/{id}**        | Modificar las fechas de una reserva existente. [Admin] & [Usuario(solo las suyas)]                |
+| **DELETE /reservas/{id}**     | Cancelar una reserva existente. [Admin] & [Usuario(solo las suyas)]                               |
 
 ---
 

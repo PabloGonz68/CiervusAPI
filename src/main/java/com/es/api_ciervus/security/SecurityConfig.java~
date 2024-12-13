@@ -2,7 +2,6 @@ package com.es.api_ciervus.security;
 
 import com.es.api_ciervus.error.exception.InternalServerErrorException;
 import com.es.api_ciervus.model.Producto;
-import com.es.api_ciervus.model.Reserva;
 import com.es.api_ciervus.model.Usuario;
 import com.es.api_ciervus.repository.ProductoRepository;
 import com.es.api_ciervus.repository.ReservaRepository;
@@ -63,10 +62,10 @@ public class SecurityConfig {
                         //Usuarios
                         .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll()//todos
-                        .requestMatchers(HttpMethod.GET, "/usuarios/{id}").access(getUserIdManager())//admin y el propio user
+                        .requestMatchers(HttpMethod.GET, "/usuarios/{id}").access(getUsuariosIdManager())//admin y el propio user
                         .requestMatchers(HttpMethod.GET, "/usuarios/").hasRole("ADMIN")//Solo admin
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").access(getUserIdManager())
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").access(getUserIdManager() )
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").access(getUsuariosIdManager())
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").access(getUsuariosIdManager() )
                         //Productos
                         .requestMatchers(HttpMethod.POST, "/productos/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos/").permitAll()
@@ -117,7 +116,7 @@ public class SecurityConfig {
                 return new AuthorizationDecision(false);
             }
 
-            Long idProducto = producto.getPropietario_id().getId();
+            long idProducto = producto.getPropietario_id().getId();
             Usuario user = usuarioRepository.findById(id).orElse(null);
 
             if (user == null) {
@@ -125,85 +124,6 @@ public class SecurityConfig {
             }
 
             if (!producto.getPropietario_id().getUsername().equals(auth.getName())) {
-                return new AuthorizationDecision(false);
-            }
-
-            return new AuthorizationDecision(true);
-        };
-    }
-
-    public AuthorizationManager<RequestAuthorizationContext> getReservasIdManager() {
-        return (authentication, object) -> {
-            Authentication auth = authentication.get();
-
-            boolean isAdmin = auth.getAuthorities().stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-
-            if (isAdmin) {
-                return new AuthorizationDecision(true);
-            }
-
-            String path = object.getRequest().getRequestURI();
-            String idString = path.replaceAll("/partidas/", "");
-            Long id = stl.stringToLong(idString);
-
-            if(id == null) {
-                return new AuthorizationDecision(false);
-            }
-
-            Reserva reserva = null;
-            try {
-                reserva = reservaRepository.findById(id).orElse(null);
-            } catch (Exception e) {
-                throw new InternalServerErrorException("Error inesperado: " + e.getMessage());
-            }
-
-            if (reserva == null) {
-                return new AuthorizationDecision(false);
-            }
-
-            Long idReserva = reserva.getUsuario_id().getId();
-            Usuario user = usuarioRepository.findById(id).orElse(null);
-
-            if (user == null) {
-                return new AuthorizationDecision(false);
-            }
-
-            if (!reserva.getUsuario_id().getUsername().equals(auth.getName())) {
-                return new AuthorizationDecision(false);
-            }
-
-            return new AuthorizationDecision(true);
-        };
-    }
-
-    public AuthorizationManager<RequestAuthorizationContext> getUserIdManager() {
-        return (authentication, object) -> {
-            Authentication auth = authentication.get();
-
-            boolean isAdmin = auth.getAuthorities().stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-
-            if (isAdmin) {
-                return new AuthorizationDecision(true);
-            }
-
-            String path = object.getRequest().getRequestURI();
-            String idString = path.replaceAll("/partidas/", "");
-            Long id = stl.stringToLong(idString);
-
-            if(id == null) {
-                return new AuthorizationDecision(false);
-            }
-
-            Usuario usuario = null;
-            try {
-                usuario = usuarioRepository.findById(id).orElse(null);
-            } catch (Exception e) {
-                throw new InternalServerErrorException("Error inesperado: " + e.getMessage());
-            }
-
-            if (usuario == null) {
                 return new AuthorizationDecision(false);
             }
 

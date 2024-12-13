@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,9 +44,17 @@ public class ReservaService {
         Producto producto = productoRepository.findById(reservaDTO.getProducto_id()).orElseThrow(() -> new ResourceNotFoundException("El producto no existe"));
         Validator.validateReserva(reservaDTO);
         Reserva reserva = mapper.mapToReserva(reservaDTO, usuario, producto);
+        Date fechaInicio = new Date();
+        reserva.setFecha_inicio(fechaInicio);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaInicio);
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        Date fechaFin = calendar.getTime();
+
+        reserva.setFecha_fin(fechaFin);
         reservaRepository.save(reserva);
         return mapper.mapToReservaDTO(reserva);
-
     }
 
     public ReservaDTO getById(String id) {

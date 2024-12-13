@@ -20,8 +20,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,9 +69,11 @@ public class UsuarioService implements UserDetailsService {
             throw new BadRequestException("El rol debe ser ADMIN o USER");
         }
         Usuario newUser = new Usuario();
+        newUser.setEmail(user.getEmail());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword1()));
         newUser.setRoles(user.getRoles());
+        newUser.setFecha_registro(new Date());
         usuarioRepository.save(newUser);
         return user;
     }

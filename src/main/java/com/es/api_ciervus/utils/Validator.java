@@ -4,9 +4,11 @@ import com.es.api_ciervus.dto.ProductoDTO;
 import com.es.api_ciervus.dto.ReservaDTO;
 import com.es.api_ciervus.dto.UsuarioDTO;
 import com.es.api_ciervus.error.exception.ValidationException;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class Validator {
 
     public static  void validateUser(UsuarioDTO usuarioDTO) {
@@ -44,18 +46,6 @@ public class Validator {
     }
 
     public static  void validateReserva(ReservaDTO reservaDTO) {
-        if (reservaDTO.getFecha_inicio() == null) {
-            throw new ValidationException("La fecha de inicio de la reserva no puede estar vacia");
-        }
-        if (reservaDTO.getFecha_fin() == null) {
-            throw new ValidationException("La fecha de fin de la reserva no puede estar vacia");
-        }
-        if (reservaDTO.getFecha_inicio().after(reservaDTO.getFecha_fin())) {
-            throw new ValidationException("La fecha de inicio debe ser anterior a la fecha de fin.");
-        }
-        if (reservaDTO.getFecha_inicio().before(new Date())) {
-            throw new ValidationException("La fecha de inicio de la reserva no puede estar en el pasado.");
-        }
         if (reservaDTO.getProducto_id() == null) {
             throw new ValidationException("El producto de la reserva no puede estar vacio");
         }

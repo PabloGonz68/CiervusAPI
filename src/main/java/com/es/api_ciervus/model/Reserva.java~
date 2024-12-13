@@ -32,7 +32,6 @@ public class Reserva {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario_id;
 
-
     public Reserva(Date fecha_inicio, Date fecha_fin, Producto producto_id, Usuario usuario_id) {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
