@@ -99,7 +99,7 @@ public class SecurityConfig {
             }
 
             String path = object.getRequest().getRequestURI();
-            String idString = path.replaceAll("/partidas/", "");
+            String idString = path.replaceAll("/productos/", "");
             Long id = stl.stringToLong(idString);
 
             if(id == null) {
@@ -117,14 +117,14 @@ public class SecurityConfig {
                 return new AuthorizationDecision(false);
             }
 
-            Long idProducto = producto.getPropietario_id().getId();
+            Long idProducto = producto.getPropietario().getId();
             Usuario user = usuarioRepository.findById(id).orElse(null);
 
             if (user == null) {
                 return new AuthorizationDecision(false);
             }
 
-            if (!producto.getPropietario_id().getUsername().equals(auth.getName())) {
+            if (!producto.getPropietario().getUsername().equals(auth.getName())) {
                 return new AuthorizationDecision(false);
             }
 
@@ -136,6 +136,7 @@ public class SecurityConfig {
         return (authentication, object) -> {
             Authentication auth = authentication.get();
 
+            // Validar si es administrador
             boolean isAdmin = auth.getAuthorities().stream()
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
@@ -143,39 +144,43 @@ public class SecurityConfig {
                 return new AuthorizationDecision(true);
             }
 
+            // Obtener ID de la reserva desde la URI
             String path = object.getRequest().getRequestURI();
-            String idString = path.replaceAll("/partidas/", "");
+            String idString = path.replaceAll("/reservas/", "");
             Long id = stl.stringToLong(idString);
 
-            if(id == null) {
+            if (id == null) {
                 return new AuthorizationDecision(false);
             }
 
-            Reserva reserva = null;
+            // Buscar la reserva
+            Reserva reserva;
             try {
                 reserva = reservaRepository.findById(id).orElse(null);
             } catch (Exception e) {
-                throw new InternalServerErrorException("Error inesperado: " + e.getMessage());
+                throw new InternalServerErrorException("Error inesperado al buscar la reserva: " + e.getMessage());
             }
 
             if (reserva == null) {
                 return new AuthorizationDecision(false);
             }
 
-            Long idReserva = reserva.getUsuario_id().getId();
-            Usuario user = usuarioRepository.findById(id).orElse(null);
-
-            if (user == null) {
+            // Verificar propietario del producto asociado a la reserva
+            Producto producto = reserva.getProducto();
+            if (producto == null || !producto.getPropietario().getUsername().equals(auth.getName())) {
                 return new AuthorizationDecision(false);
             }
 
-            if (!reserva.getUsuario_id().getUsername().equals(auth.getName())) {
+            // Verificar que el usuario de la reserva coincide con el autenticado
+            Usuario usuarioReserva = reserva.getUsuario();
+            if (usuarioReserva == null || !usuarioReserva.getUsername().equals(auth.getName())) {
                 return new AuthorizationDecision(false);
             }
 
             return new AuthorizationDecision(true);
         };
     }
+
 
     public AuthorizationManager<RequestAuthorizationContext> getUserIdManager() {
         return (authentication, object) -> {
@@ -189,7 +194,7 @@ public class SecurityConfig {
             }
 
             String path = object.getRequest().getRequestURI();
-            String idString = path.replaceAll("/partidas/", "");
+            String idString = path.replaceAll("/usuarios/", "");
             Long id = stl.stringToLong(idString);
 
             if(id == null) {
@@ -204,6 +209,9 @@ public class SecurityConfig {
             }
 
             if (usuario == null) {
+                return new AuthorizationDecision(false);
+            }
+            if (!usuario.getUsername().equals(auth.getName())) {
                 return new AuthorizationDecision(false);
             }
 

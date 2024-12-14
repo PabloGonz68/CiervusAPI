@@ -15,6 +15,8 @@ public class Mapper {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setEmail(usuario.getEmail());
         usuarioDTO.setUsername(usuario.getUsername());
+        usuarioDTO.setPassword(usuario.getPassword());
+        usuarioDTO.setRoles(usuario.getRoles());
         return usuarioDTO;
     }
 
@@ -22,6 +24,8 @@ public class Mapper {
         Usuario usuario = new Usuario();
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setUsername(usuarioDTO.getUsername());
+        usuario.setPassword(usuarioDTO.getPassword());
+        usuario.setRoles(usuarioDTO.getRoles());
         return usuario;
     }
 
@@ -31,7 +35,7 @@ public class Mapper {
        productoDTO.setDescripcion(producto.getDescripcion());
        productoDTO.setPrecio(producto.getPrecio());
        productoDTO.setFecha_publicacion(producto.getFecha_publicacion());
-       productoDTO.setPropietario_id(producto.getPropietario_id().getId());
+       productoDTO.setPropietario_id(producto.getPropietario().getId());
        return productoDTO;
     }
 
@@ -41,27 +45,23 @@ public class Mapper {
        producto.setDescripcion(productoDTO.getDescripcion());
        producto.setPrecio(productoDTO.getPrecio());
        producto.setFecha_publicacion(productoDTO.getFecha_publicacion());
-       producto.setPropietario_id(usuario);
+       producto.setPropietario(usuario);
        return producto;
     }
 
     public ReservaDTO mapToReservaDTO(Reserva reserva) {
         ReservaDTO reservaDTO = new ReservaDTO();
-        reservaDTO.setNombre(reserva.getNombre());
         reservaDTO.setEstado(reserva.getEstado());
-        reservaDTO.setPrecio(reserva.getPrecio());
-        reservaDTO.setProducto_id(reserva.getProducto_id().getId());
-        reservaDTO.setUsuario_id(reserva.getUsuario_id().getId());
+        reservaDTO.setProducto_id(reserva.getProducto().getId());
+        reservaDTO.setUsuario_id(reserva.getUsuario().getId());
         return reservaDTO;
     }
 
     public Reserva mapToReserva(ReservaDTO reservaDTO, Usuario usuario, Producto producto) {
         Reserva reserva = new Reserva();
-        reserva.setNombre(reservaDTO.getNombre());
         reserva.setEstado(reservaDTO.getEstado());
-        reserva.setPrecio(reservaDTO.getPrecio());
-        reserva.setProducto_id(producto);
-        reserva.setUsuario_id(usuario);
+        reserva.setProducto(producto);
+        reserva.setUsuario(usuario);
         return reserva;
     }
 }

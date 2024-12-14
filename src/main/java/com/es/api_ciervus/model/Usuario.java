@@ -7,29 +7,35 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
 @Table(name = "usuarios")
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private String roles;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha_registro;
-    @OneToMany(mappedBy = "propietario_id", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> productos;
-    @OneToMany(mappedBy = "usuario_id", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
 
     public Usuario(String username, String email, String password, String roles, Date fecha_registro) {
@@ -39,5 +45,5 @@ public class Usuario {
         this.roles = roles;
         this.fecha_registro = fecha_registro;
     }
-
 }
+
