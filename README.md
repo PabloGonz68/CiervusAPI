@@ -54,14 +54,14 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ### **1. Usuarios**
 
-| **Endpoint**              | **Descripción**                                              |
-|---------------------------|--------------------------------------------------------------|
-| **POST /usuarios/**       | Crear un nuevo usuario en la plataforma (Registro). [Admin] & [Usuario(solo el suyo)] |
-| **POST /login**           | Iniciar sesión en la plataforma. [Público]                  |
-| **GET /usuarios/**        | Obtener la información de todos los usuarios. [Admin]       |
-| **GET /usuarios/{id}**    | Obtener la información de un usuario específico por su `id`. [Admin] & [Usuario(solo el suyo)] |
-| **PUT /usuarios/{id}**    | Actualizar la información de un usuario por su `id`. [Admin] & [Usuario(solo el suyo)] |
-| **DELETE /usuarios/{id}** | Eliminar un usuario de la plataforma por su `id`. [Admin] & [Usuario(solo el suyo)] |
+| **Endpoint**                | **Descripción**                                              |
+|-----------------------------|--------------------------------------------------------------|
+| **POST /usuarios/register** | Crear un nuevo usuario en la plataforma (Registro). [Público] |
+| **POST /usuarios/login**    | Iniciar sesión en la plataforma. [Público]                  |
+| **GET /usuarios/**          | Obtener la información de todos los usuarios. [Admin]       |
+| **GET /usuarios/{id}**      | Obtener la información de un usuario específico por su `id`. [Admin] & [Usuario(solo el suyo)] |
+| **PUT /usuarios/{id}**      | Actualizar la información de un usuario por su `id`. [Admin] & [Usuario(solo el suyo)] |
+| **DELETE /usuarios/{id}**   | Eliminar un usuario de la plataforma por su `id`. [Admin] & [Usuario(solo el suyo)] |
 
 
 
@@ -72,7 +72,7 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 | **Endpoint**               | **Descripción**                                              |
 |----------------------------|--------------------------------------------------------------|
-| **POST /productos/**       | Crear un nuevo producto disponible para alquiler. [Admin] & [Usuario(solo los suyos)]              |
+| **POST /productos/**       | Crear un nuevo producto disponible para alquiler. [Público]             |
 | **GET /productos/**        | Obtener la lista de todos los productos disponibles. [Público]          |
 | **GET /productos/{id}**    | Obtener detalles de un producto específico por su `id`. [Público]       |
 | **PUT /productos/{id}**    | Actualizar información de un producto por su `id`. [Admin] & [Usuario(solo los suyos)]           |
@@ -82,28 +82,41 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 
 ### **3. Reservas**
 
-| **Endpoint**                  | **Descripción**                                              |
-|-------------------------------|--------------------------------------------------------------|
-| **POST /reservas/**           | Crear una nueva reserva para un producto. [Admin] & [Usuario(solo las suyas)]                    |
-| **GET /reservas/{usuarioId}** | Consultar las reservas activas de un usuario específico por su `usuarioId`. [Admin] & [Usuario(solo las suyas)]   |
-| **PUT /reservas/{id}**        | Modificar las fechas de una reserva existente. [Admin] & [Usuario(solo las suyas)]                |
-| **DELETE /reservas/{id}**     | Cancelar una reserva existente. [Admin] & [Usuario(solo las suyas)]                               |
+| **Endpoint**              | **Descripción**                                                                                |
+|---------------------------|------------------------------------------------------------------------------------------------|
+| **POST /reservas/**       | Crear una nueva reserva para un producto. [Solo autenticados]                                  |
+| **GET /reservas/**        | Obtener la lista de todas las reservas disponibles. . [Admin]                                  |
+| **GET /reservas/{id}**    | Obtener detalles de una reserva en específico por su `id`. [Admin] & [Usuario(solo las suyas)] |
+| **PUT /reservas/{id}**    | Modificar las fechas de una reserva existente. [Admin] & [Usuario(solo las suyas)]             |
+| **DELETE /reservas/{id}** | Cancelar una reserva existente. [Admin] & [Usuario(solo las suyas)]                            |
 
 ---
 
 ## **Lógica de Negocio**
 
 ### **1. Gestión de Usuarios**
-- **Registro y autenticación**:  
-  Los usuarios se registran proporcionando su nombre, email y contraseña. La contraseña se almacena cifrada. Los usuarios inician sesión con su email y contraseña para obtener un token de autenticación.
+- **Registro de usuario**:
+  - Se valida que el correo electrónico no exista previamente.
+  - Las contraseñas se almacenan encriptadas.
+
+- **Autenticación**:
+  - Validación de correo electrónico y contraseña.
+  - Generación de tokens para sesiones seguras
 
 - **Roles**:  
-  Los usuarios tienen roles definidos como "usuario" o "admin".
-    - **Usuarios**: Publican productos, realizan reservas y gestionan sus datos personales.
-    - **Administradores**: Supervisan y gestionan usuarios, productos y reservas en toda la plataforma.
+  Los usuarios tienen roles definidos como "USER" o "ADMIN".
+  - **Usuarios**: Publican productos, realizan reservas y gestionan sus datos personales.
+  - **Administradores**: Supervisan y gestionan usuarios, productos y reservas en toda la plataforma.
 
 - **Verificación de usuarios**:  
   Se implementa un sistema de validación para asegurar que los datos de los usuarios sean únicos y válidos.
+
+- **Visualización**:  
+  Los usuarios pueden ver sus propios datos personales y los administradores pueden ver la información de otros usuarios tambien.
+
+- **Actualizacion y eliminacion de usuarios**:
+  - Los usuarios pueden actualizar sus propios datos personales y eliminarse de la plataforma
+  - Los administradores pueden actualizar y eliminar cualquier usuario.
 
 ---
 
@@ -112,7 +125,10 @@ Gestiona la relación entre los usuarios y los productos alquilados.
   Los usuarios pueden publicar productos para alquilar proporcionando nombre, descripción, precio, y fechas de disponibilidad. Solo un administrador o el propietario puede editar o eliminar su producto.
 
 - **Visualización**:  
-  Los usuarios pueden explorar los productos disponibles utilizando filtros como categoría, precio, y fechas de disponibilidad.
+  Los usuarios pueden explorar los productos disponibles para alquiler.
+
+- **Eliminación de productos y sus reservas**:
+  Los administradores o el propietario pueden eliminar un producto y sus reservas asociadas.
 
 - **Restricción de duplicados**:  
   No se permite que un usuario publique dos productos idénticos (mismo nombre y descripción) dentro de un intervalo corto de tiempo.
@@ -120,18 +136,18 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 ---
 ### **3. Gestión de Reservas**
 - **Creación de reservas**:  
-  Los usuarios pueden reservar un producto especificando una fecha de inicio y fin. La lógica valida que:
-    - El producto no esté reservado en el rango de fechas solicitado. Si ya existe una reserva para esas fechas, la solicitud será rechazada con un error `409 Conflict`.
-    - El usuario no sea el propietario del producto reservado(prohibido auto-reservar).
+  Los usuarios pueden realizar una reserva proporcionando el `usuario_id` y el `producto_id`. Se valida que el usuario y el producto existan, y se asignan fechas de inicio (la fecha actual) y fin (7 días después de la fecha actual). La reserva se guarda en la base de datos.
 
-- **Cancelación de reservas**:  
-  Las reservas pueden cancelarse siempre que la fecha de inicio no haya pasado. Si ya está activa, la cancelación no será permitida.
+- **Visualización de reservas**:  
+  Los usuarios pueden consultar sus reservas mediante su `id` o ver todas las reservas disponibles.
 
-- **Disponibilidad**:  
-  La lógica verifica las fechas de disponibilidad del producto para asegurar que la reserva solicitada esté dentro de las fechas permitidas por el propietario.
+- **Actualización de reservas**:  
+  Los usuarios pueden actualizar una reserva proporcionando un `id` válido. Se valida que el `usuario_id` y `producto_id` existan.
+
+- **Eliminación de reservas**:  
+  Los usuarios pueden eliminar una reserva proporcionando un `id` válido. Si no existe, se lanza un error.
 
 ---
-
 ## Excepciones y Códigos de Estado
 ### Excepciones
 - **400 Bad Request**: Cuando la solicitud tiene datos incorrectos o falta información.
