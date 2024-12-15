@@ -102,7 +102,7 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 - **Autenticación**:
   - Validación de correo electrónico y contraseña.
   - Generación de tokens para sesiones seguras
-  - 
+
 - **Roles**:  
   Los usuarios tienen roles definidos como "USER" o "ADMIN".
     - **Usuarios**: Publican productos, realizan reservas y gestionan sus datos personales.

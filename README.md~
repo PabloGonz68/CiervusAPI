@@ -136,7 +136,7 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 ---
 ### **3. Gestión de Reservas**
 - **Creación de reservas**:  
-  Los usuarios pueden realizar una reserva proporcionando el `usuario_id` y el `producto_id`. Se valida que el usuario y el producto existan, y se asignan fechas de inicio (actual) y fin (7 días después). La reserva se guarda en la base de datos.
+  Los usuarios pueden realizar una reserva proporcionando el `usuario_id` y el `producto_id`. Se valida que el usuario y el producto existan, y se asignan fechas de inicio (la fecha actual) y fin (7 días después de la fecha actual). La reserva se guarda en la base de datos.
 
 - **Visualización de reservas**:  
   Los usuarios pueden consultar sus reservas mediante su `id` o ver todas las reservas disponibles.
@@ -147,7 +147,6 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 - **Eliminación de reservas**:  
   Los usuarios pueden eliminar una reserva proporcionando un `id` válido. Si no existe, se lanza un error.
 
----
 
 ## Excepciones y Códigos de Estado
 ### Excepciones
