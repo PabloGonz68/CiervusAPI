@@ -1,6 +1,7 @@
 package com.es.api_ciervus.controller;
 
 import com.es.api_ciervus.dto.ProductoDTO;
+import com.es.api_ciervus.error.exception.BadRequestException;
 import com.es.api_ciervus.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
+
         ProductoDTO producto = productoService.getById(id);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }

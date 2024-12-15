@@ -34,7 +34,7 @@ public class ProductoService {
             if (idLong == null || idLong <= 0) {
                 throw  new BadRequestException("El id no es valido");
             }
-            Producto producto = productoRepository.findById(idLong).orElse(null);
+            Producto producto = productoRepository.findById(idLong).orElseThrow(() -> new ResourceNotFoundException("El producto no existe"));
             return mapper.mapToProductoDTO(producto);
     }
 
@@ -53,8 +53,7 @@ public class ProductoService {
             if (productoDTO == null) {
                 throw new BadRequestException("El producto no puede estar vacio");
             }
-            Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElse(null);
-            Validator.validateProducto(productoDTO);
+            Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));             Validator.validateProducto(productoDTO);
             Producto producto = mapper.mapToProducto(productoDTO, propietario);
             productoRepository.save(producto);
             return mapper.mapToProductoDTO(producto);
@@ -62,7 +61,7 @@ public class ProductoService {
 
     public ProductoDTO update(String id, ProductoDTO productoDTO) {
             Long idLong = StringToLong.stringToLong(id);
-          Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElse(null);
+          Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));
           if(productoDTO == null || idLong == null || idLong <= 0) {
               throw new BadRequestException("El id no es valido");
           }

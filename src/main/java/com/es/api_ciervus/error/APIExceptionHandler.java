@@ -34,19 +34,13 @@ public class APIExceptionHandler {
         return new ErrorMessageForClient(e.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler(ChangeSetPersister.NotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorMessageForClient handleNotFoundException(HttpServletRequest request, ChangeSetPersister.NotFoundException e) {
+    public ErrorMessageForClient handleNotFoundException(HttpServletRequest request, ResourceNotFoundException e) {
         return new ErrorMessageForClient(e.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler(MethodNotAllowedException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    @ResponseBody
-    public ErrorMessageForClient handleMethodNotAllowedException(HttpServletRequest request, MethodNotAllowedException e) {
-        return new ErrorMessageForClient(e.getMessage(), request.getRequestURI());
-    }
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

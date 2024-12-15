@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/usuarios/{id}").access(getUserIdManager())//admin y el propio user
                         .requestMatchers(HttpMethod.GET, "/usuarios/").hasRole("ADMIN")//Solo admin
                         .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").access(getUserIdManager())
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").access(getUserIdManager() )
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").access(getUserIdManager())
                         //Productos
                         .requestMatchers(HttpMethod.POST, "/productos/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos/").permitAll()
@@ -150,7 +150,7 @@ public class SecurityConfig {
             Long id = stl.stringToLong(idString);
 
             if (id == null) {
-                return new AuthorizationDecision(false);
+                 new AuthorizationDecision(false);
             }
 
             // Buscar la reserva

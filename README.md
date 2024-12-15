@@ -138,7 +138,6 @@ Gestiona la relación entre los usuarios y los productos alquilados.
 - **401 Unauthorized**: Cuando falta autenticación o el token es inválido.
 - **403 Forbidden**: Cuando el acceso al recurso está prohibido por falta de permisos.
 - **404 Not Found**: Cuando un recurso no se encuentra (por ejemplo, usuario, producto, o reserva).
-- **405 Method Not Allowed**: Cuando se utiliza un método HTTP incorrecto.
 - **409 Conflict**: Cuando se intenta crear un recurso con datos duplicados.
 - **500 Internal Server Error**: Cuando ocurre un error inesperado en el servidor.
 ### Codigos de Estado Restantes
