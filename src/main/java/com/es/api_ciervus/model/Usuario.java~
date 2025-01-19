@@ -30,7 +30,6 @@ public class Usuario {
     private String roles;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(nullable = false)
     private Date fecha_registro;
 
     @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, orphanRemoval = true)

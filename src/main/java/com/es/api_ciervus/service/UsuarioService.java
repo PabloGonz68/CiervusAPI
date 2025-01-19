@@ -91,6 +91,7 @@ public class UsuarioService implements UserDetailsService {
         if (usuarios.isEmpty()) {
             throw new BadRequestException("No hay usuarios registrados");
         }
+
         List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
         usuarios.forEach(usuario -> usuarioDTOS.add(mapper.mapToUsuarioDTO(usuario)));
         return usuarioDTOS;
@@ -102,10 +103,32 @@ public class UsuarioService implements UserDetailsService {
             throw new BadRequestException("El id no es valido");
         }
         Validator.validateUser(user);
-        Usuario newUser = mapper.mapToUsuario(user);
-        newUser.setId(idLong);
-        usuarioRepository.save(newUser);
-        return mapper.mapToUsuarioDTO(newUser);
+        usuarioRepository.findByUsername(user.getUsername()).ifPresent(existingUser -> {
+            if (!existingUser.getId().equals(idLong)) {
+                throw new ConflictException("El nombre de usuario ya existe");
+            }
+        });
+        /*
+        if (usuarioRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new ConflictException("El nombre de usuario ya existe");
+        }*/
+        usuarioRepository.findByEmail(user.getEmail()).ifPresent(existingUser -> {
+            if (!existingUser.getId().equals(idLong)) {
+                throw new ConflictException("El email ya existe");
+            }
+        });
+        /*
+        if(usuarioRepository.findByEmail(user.getEmail()).isPresent()){
+            throw new ConflictException("El email ya existe");
+        }*/
+
+        Usuario existingUser = usuarioRepository.findById(idLong).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
+        existingUser.setEmail(user.getEmail());
+        existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        existingUser.setRoles(user.getRoles());
+        usuarioRepository.save(existingUser);
+        return mapper.mapToUsuarioDTO(existingUser);
     }
 
     public void delete(String id) {

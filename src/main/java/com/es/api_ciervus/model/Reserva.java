@@ -16,9 +16,11 @@ public class Reserva {
     private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false)
     private Date fecha_inicio;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false)
     private Date fecha_fin;
 
     @Column(nullable = false)

@@ -1,9 +1,7 @@
 package com.es.api_ciervus.service;
 
 import com.es.api_ciervus.dto.ProductoDTO;
-import com.es.api_ciervus.error.exception.BadRequestException;
-import com.es.api_ciervus.error.exception.ResourceNotFoundException;
-import com.es.api_ciervus.error.exception.ValidationException;
+import com.es.api_ciervus.error.exception.*;
 import com.es.api_ciervus.model.Producto;
 import com.es.api_ciervus.model.Usuario;
 import com.es.api_ciervus.repository.ProductoRepository;
@@ -12,6 +10,7 @@ import com.es.api_ciervus.utils.Mapper;
 import com.es.api_ciervus.utils.StringToLong;
 import com.es.api_ciervus.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +52,16 @@ public class ProductoService {
             if (productoDTO == null) {
                 throw new BadRequestException("El producto no puede estar vacio");
             }
-            Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));             Validator.validateProducto(productoDTO);
+            String usernameAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
+            Usuario usuarioAtenticado = usuarioRepository.findByUsername(usernameAutenticado).orElseThrow(() -> new UnauthorizedException("El usuario no esta autenticado"));
+        Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));
+            if (!usuarioAtenticado.getRoles().contains("ADMIN")) {
+                if(!usuarioAtenticado.getId().equals(productoDTO.getPropietario_id())) {
+                    throw new ForbiddenException("El propietario del producto no coincide con su usuario");
+                }
+            }
+
+            Validator.validateProducto(productoDTO);
             Producto producto = mapper.mapToProducto(productoDTO, propietario);
             productoRepository.save(producto);
             return mapper.mapToProductoDTO(producto);
@@ -64,6 +72,15 @@ public class ProductoService {
           Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));
           if(productoDTO == null || idLong == null || idLong <= 0) {
               throw new BadRequestException("El id no es valido");
+          }
+          productoRepository.findById(idLong).orElseThrow(() -> new ResourceNotFoundException("El producto no existe"));
+
+          String usernameAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
+          Usuario usuarioAtenticado = usuarioRepository.findByUsername(usernameAutenticado).orElseThrow(() -> new UnauthorizedException("El usuario no esta autenticado"));
+          if(!usuarioAtenticado.getRoles().contains("ADMIN")) {
+              if(!usuarioAtenticado.getId().equals(productoDTO.getPropietario_id())){
+                  throw new ForbiddenException("El propietario del producto no coincide con su usuario");
+              }
           }
           Validator.validateProducto(productoDTO);
           Producto producto = mapper.mapToProducto(productoDTO, propietario);

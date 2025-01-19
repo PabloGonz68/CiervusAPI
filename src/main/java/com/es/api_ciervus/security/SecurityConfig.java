@@ -74,7 +74,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/productos/{id}").access(getProductosIdManager())
                         .requestMatchers(HttpMethod.DELETE, "/productos/{id}").access(getProductosIdManager())
                         //Reservas
-                        .requestMatchers(HttpMethod.POST, "/reservas/").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/reservas/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/reservas/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/reservas/{id}").access(getReservasIdManager())
                         .requestMatchers(HttpMethod.PUT, "/reservas/{id}").access(getReservasIdManager())
