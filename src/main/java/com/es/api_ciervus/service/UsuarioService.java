@@ -59,6 +59,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public UserRegisterDTO register(UserRegisterDTO user){
+        Validator.validateUserRegister(user);
         if (usuarioRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new ConflictException("El usuario ya existe");
         }
@@ -68,6 +69,7 @@ public class UsuarioService implements UserDetailsService {
         if (!user.getRoles().equals("ADMIN") && !user.getRoles().equals("USER")) {
             throw new BadRequestException("El rol debe ser ADMIN o USER");
         }
+
         Usuario newUser = new Usuario();
         newUser.setEmail(user.getEmail());
         newUser.setUsername(user.getUsername());
@@ -108,10 +110,6 @@ public class UsuarioService implements UserDetailsService {
                 throw new ConflictException("El nombre de usuario ya existe");
             }
         });
-        /*
-        if (usuarioRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new ConflictException("El nombre de usuario ya existe");
-        }*/
         usuarioRepository.findByEmail(user.getEmail()).ifPresent(existingUser -> {
             if (!existingUser.getId().equals(idLong)) {
                 throw new ConflictException("El email ya existe");
