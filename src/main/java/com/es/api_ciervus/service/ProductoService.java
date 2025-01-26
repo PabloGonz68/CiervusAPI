@@ -56,6 +56,7 @@ public class ProductoService {
             Usuario usuarioAtenticado = usuarioRepository.findByUsername(usernameAutenticado).orElseThrow(() -> new UnauthorizedException("El usuario no esta autenticado"));
         Usuario propietario = usuarioRepository.findById(productoDTO.getPropietario_id()).orElseThrow(() -> new ResourceNotFoundException("El propietario no existe"));
             if (!usuarioAtenticado.getRoles().contains("ADMIN")) {
+                // Comprobar que el propietario del producto sea el mismo que el usuario autenticado
                 if(!usuarioAtenticado.getId().equals(productoDTO.getPropietario_id())) {
                     throw new ForbiddenException("El propietario del producto no coincide con su usuario");
                 }

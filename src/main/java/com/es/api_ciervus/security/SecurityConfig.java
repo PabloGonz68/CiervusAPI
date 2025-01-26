@@ -136,6 +136,10 @@ public class SecurityConfig {
         return (authentication, object) -> {
             Authentication auth = authentication.get();
 
+            if (auth == null || !auth.isAuthenticated()){
+                return new AuthorizationDecision(false);
+            }
+
             // Validar si es administrador
             boolean isAdmin = auth.getAuthorities().stream()
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
@@ -146,28 +150,18 @@ public class SecurityConfig {
 
             // Obtener ID de la reserva desde la URI
             String path = object.getRequest().getRequestURI();
+
             String idString = path.replaceAll("/reservas/", "");
             Long id = stl.stringToLong(idString);
 
             if (id == null) {
-                 new AuthorizationDecision(false);
+                 return new AuthorizationDecision(false);
             }
 
             // Buscar la reserva
-            Reserva reserva;
-            try {
-                reserva = reservaRepository.findById(id).orElse(null);
-            } catch (Exception e) {
-                throw new InternalServerErrorException("Error inesperado al buscar la reserva: " + e.getMessage());
-            }
+            Reserva reserva = reservaRepository.findById(id).orElse(null);
 
             if (reserva == null) {
-                return new AuthorizationDecision(false);
-            }
-
-            // Verificar propietario del producto asociado a la reserva
-            Producto producto = reserva.getProducto();
-            if (producto == null || !producto.getPropietario().getUsername().equals(auth.getName())) {
                 return new AuthorizationDecision(false);
             }
 

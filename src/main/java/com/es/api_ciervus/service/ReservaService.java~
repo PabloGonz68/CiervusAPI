@@ -134,10 +134,10 @@ public class ReservaService {
         // Si no es un administrador, validamos que el usuario autenticado sea el mismo que el de la reserva o el propietario del producto
         if (!usuarioAutenticado.getRoles().contains("ADMIN")) {
             // Verifica que el propietario no intente reservar su propio producto
-            if (producto.getPropietario().getId().equals(usuarioAutenticado.getId())) {
+            if (producto.getPropietario().getId().equals(usuario.getId())) {
                 throw new BadRequestException("El propietario no puede reservar su propio producto");
             }
-
+            
             // Verifica si el usuario autenticado está intentando actualizar su propia reserva
             if (!usuarioAutenticado.getId().equals(reservaDTO.getUsuario_id())) {
                 throw new ForbiddenException("No puedes actualizar una reserva que no es tuya");
